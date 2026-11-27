@@ -1,0 +1,8 @@
+{
+  "pages": ["pages/booking/index"],
+  "window": {
+    "navigationBarTitleText": "美容预约",
+    "navigationBarBackgroundColor": "#f8f4ee",
+    "backgroundColor": "#f8f4ee"
+  }
+}

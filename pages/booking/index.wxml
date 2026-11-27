@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="title">预约护理</view>
+  <view class="card">
+    <view class="label">护理服务</view>
+    <picker range="{{services}}" range-key="name" bindchange="chooseService" disabled="{{loading || submitting || !services.length}}">
+      <view class="field">{{service ? service.name + ' · ¥' + service.price : '选择护理服务'}}</view>
+    </picker>
+    <view class="label">到店时段（北京时间）</view>
+    <picker range="{{slots}}" range-key="label" bindchange="chooseSlot" disabled="{{loading || submitting || !slots.length}}">
+      <view class="field">{{slot ? slot.label : '选择到店时段'}}</view>
+    </picker>
+    <view wx:if="{{!loading && !slots.length && !error}}" class="hint">目前没有可预约时段</view>
+    <button class="primary" bindtap="submitBooking" loading="{{submitting}}" disabled="{{loading || submitting || !slot || !service}}">提交预约</button>
+    <button class="secondary" bindtap="loadOptions" loading="{{loading}}" disabled="{{loading || submitting}}">刷新服务和时段</button>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{booking}}" class="card">
+    <view class="label">最近预约</view>
+    <view>{{booking.serviceName}} · {{booking.slotLabel}}</view>
+    <view class="status">{{booking.status === 'confirmed' ? '门店已确认' : '等待门店确认'}}</view>
+    <button class="secondary" bindtap="refreshBooking" loading="{{refreshing}}" disabled="{{refreshing}}">刷新预约状态</button>
+  </view>
+</view>
