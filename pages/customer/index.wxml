@@ -1,0 +1,27 @@
+<view class="screen">
+  <view class="heading">我的服务</view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{!orders.length}}" class="panel">
+    <view class="muted">购买护理项目后，可在这里预约到店。</view>
+    <navigator open-type="reLaunch" url="/pages/home/index">浏览经营项目 ›</navigator>
+  </view>
+  <view wx:for="{{orders}}" wx:key="id" class="panel">
+    <view class="panel-title">{{item.name}}</view>
+    <view>购买 {{item.visits}} 次 · 已核销 {{item.used}} 次 · 可预约 {{item.available}} 次</view>
+    <button class="secondary" bindtap="openSlots" data-id="{{item.id}}" disabled="{{busy || !item.available}}">选择可约时段</button>
+    <block wx:if="{{active === item.id && !busy}}">
+      <picker wx:if="{{slots.length}}" range="{{slots}}" range-key="label" bindchange="selectSlot">
+        <view class="field">{{slot ? slot.label : '选择北京时间'}}</view>
+      </picker>
+      <view wx:else class="muted">暂无可约时段，请稍后刷新。</view>
+      <button wx:if="{{slot}}" class="action" bindtap="act">提交预约</button>
+    </block>
+  </view>
+  <view class="section">预约记录</view>
+  <button class="secondary" bindtap="refresh">刷新预约状态</button>
+  <view wx:for="{{bookings}}" wx:key="id" class="panel">
+    <view class="panel-title">{{item.name}}</view>
+    <view>{{item.label}} · {{item.statusLabel}}</view>
+    <button wx:if="{{item.status === 'awaiting_customer'}}" class="action" bindtap="act" data-id="{{item.id}}" disabled="{{busy}}">确认服务完成（扣 1 次）</button>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="screen">
+  <view class="heading">美容护理</view>
+  <view class="subtitle">浏览护理项目、购买服务并预约到店</view>
+  <view class="links">
+    <navigator url="/pages/customer/index">我的服务</navigator>
+    <navigator url="/pages/staff/index">店员工作台</navigator>
+    <navigator url="/pages/admin/index">管理员后台</navigator>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <block wx:if="{{campaigns.length}}">
+    <view class="section">{{buyer ? '顾客专享' : '新客活动'}}</view>
+    <view wx:for="{{campaigns}}" wx:key="id" class="panel">
+      <view class="panel-title">{{item.name}}</view>
+      <view class="price">¥{{item.price}}</view>
+      <navigator url="/pages/checkout/index?project={{item.projectId}}&campaign={{item.id}}">查看活动并购买 ›</navigator>
+    </view>
+  </block>
+  <view class="section">经营项目</view>
+  <view wx:for="{{projects}}" wx:key="id" class="panel">
+    <view class="panel-title">{{item.name}}</view>
+    <view>{{item.duration}} 分钟／次 · 共 {{item.visits}} 次</view>
+    <view wx:if="{{item.description}}" class="muted">{{item.description}}</view>
+    <view class="price">¥{{item.price}}</view>
+    <navigator url="/pages/checkout/index?project={{item.id}}">项目详情与购买 ›</navigator>
+  </view>
+</view>

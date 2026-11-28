@@ -1,0 +1,54 @@
+<view class="screen">
+  <view class="heading">管理员后台</view>
+  <input class="field" password placeholder="管理员联调令牌" bindinput="inputToken" />
+  <button class="secondary" bindtap="refresh">进入或刷新后台</button>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view wx:if="{{message}}" class="price">{{message}}</view>
+  <block wx:if="{{verified}}">
+    <view class="section">预约协同</view>
+    <view wx:if="{{!bookings.length}}" class="muted">暂无预约任务。</view>
+    <view wx:for="{{bookings}}" wx:key="id" class="panel">
+      <view class="panel-title">{{item.name}}</view>
+      <view>{{item.label}} · {{item.statusLabel}}</view>
+    </view>
+
+    <view class="section">经营项目</view>
+    <view wx:for="{{projects}}" wx:key="id" class="panel">
+      <view>{{item.name}} · ¥{{item.price}} · {{item.visits}} 次</view>
+      <button class="secondary" data-id="{{item.id}}" bindtap="edit">编辑项目</button>
+    </view>
+    <view class="panel">
+      <view class="panel-title">{{project.id ? '编辑项目' : '新增项目'}}</view>
+      <input class="field" placeholder="项目名称" value="{{project.name}}" data-field="project.name" bindinput="field" />
+      <input class="field" placeholder="项目说明" value="{{project.description}}" data-field="project.description" bindinput="field" />
+      <input class="field" type="number" placeholder="每次时长（分钟）" value="{{project.duration}}" data-field="project.duration" bindinput="field" />
+      <input class="field" type="digit" placeholder="总价（元）" value="{{project.price}}" data-field="project.price" bindinput="field" />
+      <input class="field" type="number" placeholder="服务次数" value="{{project.visits}}" data-field="project.visits" bindinput="field" />
+      <button class="action" data-kind="projects" bindtap="save" disabled="{{busy}}">保存项目</button>
+      <button wx:if="{{project.id}}" class="secondary" bindtap="edit">切换到新增项目</button>
+    </view>
+
+    <view class="section">营销活动</view>
+    <view wx:for="{{campaigns}}" wx:key="id" class="panel">
+      <view>{{item.name}} · ¥{{item.price}}</view>
+      <view>{{item.audience === 'visitor' ? '游客' : '顾客'}} · 截止 {{item.endsAt}}</view>
+    </view>
+    <view class="panel">
+      <input class="field" placeholder="活动名称" value="{{campaign.name}}" data-field="campaign.name" bindinput="field" />
+      <picker range="{{projects}}" range-key="name" bindchange="pickProject"><view class="field">{{campaign.projectName || '选择关联项目'}}</view></picker>
+      <picker range="{{['游客', '顾客']}}" bindchange="pickAudience"><view class="field">受众 · {{audience === 'visitor' ? '游客' : '顾客'}}</view></picker>
+      <input class="field" type="digit" placeholder="活动价（元）" value="{{campaign.price}}" data-field="campaign.price" bindinput="field" />
+      <picker mode="date" data-field="campaign.date" bindchange="field"><view class="field">{{campaign.date || '选择活动截止日期'}}</view></picker>
+      <button class="action" data-kind="campaigns" bindtap="save" disabled="{{busy}}">发布活动</button>
+    </view>
+
+    <view class="section">可接待排班</view>
+    <view wx:for="{{schedules}}" wx:key="id" class="panel">{{item.label}}</view>
+    <view class="panel">
+      <picker mode="date" data-field="schedule.date" bindchange="field"><view class="field">{{schedule.date || '选择日期'}}</view></picker>
+      <picker mode="time" data-field="schedule.start" bindchange="field"><view class="field">{{schedule.start || '开始时间'}}</view></picker>
+      <picker mode="time" data-field="schedule.end" bindchange="field"><view class="field">{{schedule.end || '结束时间'}}</view></picker>
+      <button class="action" data-kind="schedules" bindtap="save" disabled="{{busy}}">添加排班（北京时间）</button>
+    </view>
+  </block>
+</view>

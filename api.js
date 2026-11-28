@@ -1,12 +1,13 @@
 const baseUrl = 'https://joytest.site/salon/api'
 
-function request(path, method = 'GET', data) {
+function request(path, method = 'GET', data, token) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: baseUrl + path,
       method,
       data,
       timeout: 8000,
+      header: token ? { Authorization: 'Bearer ' + token } : {},
       success(result) {
         if (result.statusCode >= 200 && result.statusCode < 300) {
           resolve(result.data)
