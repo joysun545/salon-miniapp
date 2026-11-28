@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:3000/api'
+const baseUrl = 'https://joytest.site/salon/api'
 
 function request(path, method = 'GET', data) {
   return new Promise((resolve, reject) => {
