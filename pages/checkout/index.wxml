@@ -1,0 +1,13 @@
+<view class="screen">
+  <view class="heading">确认购买</view>
+  <view wx:if="{{project}}" class="panel">
+    <view class="panel-title">{{project.name}}</view>
+    <view>{{project.duration}} 分钟／次 · 共 {{project.visits}} 次</view>
+    <view wx:if="{{project.description}}">{{project.description}}</view>
+    <view wx:if="{{campaign}}">{{campaign.name}}</view>
+    <view class="price">订单金额 ¥{{price}}</view>
+    <view class="muted">联调模拟支付，实际收费 ¥0</view>
+    <button class="action" bindtap="pay" loading="{{busy}}" disabled="{{busy}}">模拟支付</button>
+  </view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+</view>
